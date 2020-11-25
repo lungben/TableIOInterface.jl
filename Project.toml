@@ -1,0 +1,13 @@
+name = "TableIOInterface"
+uuid = "d1efa939-5518-4425-949f-ab857e148477"
+authors = ["Benjamin Lungwitz <benj.lung@googlemail.com> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
