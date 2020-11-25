@@ -93,7 +93,7 @@ function get_example_code(t::ZippedFormat, directory:: AbstractString, filename:
     end"""
 end
 
-_get_path_code(directory, filename) = "joinpath(dirname(@__FILE__), $directory, $filename)"
+_get_path_code(directory, filename) = """joinpath(dirname(@__FILE__), "$directory", "$filename")"""
 _get_varname(filename) = replace(filename, r"[\"\-,\.#@!\%\s+\;()\$&*\[\]\{\}'^]" => "_")
 
 get_example_code(directory:: AbstractString, filename:: AbstractString, args...; kwargs...) = get_example_code(get_file_type(filename), directory, filename, args...; kwargs...)
