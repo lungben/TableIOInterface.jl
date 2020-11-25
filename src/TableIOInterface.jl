@@ -56,7 +56,7 @@ function get_example_code(t::T, directory:: AbstractString, filename:: AbstractS
     df_$(_get_varname(filename)) = let
         $import_table_io
         $import_dataframes
-        DataFrames.DataFrame(TableIO.read_table("$(_get_path_code(directory, filename))"); copycols=$(require_copycols(t)))
+        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(directory, filename))); copycols=$(require_copycols(t)))
     end"""
 end
 
@@ -65,7 +65,7 @@ function get_example_code(t::ExcelFormat, directory:: AbstractString, filename::
     df_$(_get_varname(filename)) = let
         $import_table_io
         $import_dataframes
-        df_$(_get_varname(filename)) = DataFrames.DataFrame(TableIO.read_table("$(_get_path_code(directory, filename))",
+        df_$(_get_varname(filename)) = DataFrames.DataFrame(TableIO.read_table($(_get_path_code(directory, filename)),
             # "Sheet1", # uncomment this to specify the sheet name to be imported
             ); copycols=$(require_copycols(t)))
     end"""
@@ -87,7 +87,7 @@ function get_example_code(t::ZippedFormat, directory:: AbstractString, filename:
     df_$(_get_varname(filename)) = let
         $import_table_io
         $import_dataframes
-        df_$(_get_varname(filename)) = DataFrames.DataFrame(TableIO.read_table("$(_get_path_code(directory, filename))",
+        df_$(_get_varname(filename)) = DataFrames.DataFrame(TableIO.read_table($(_get_path_code(directory, filename)),
             # "filename_in_archive", # uncomment this to specify a specific file name in the archive
             ); copycols=$(require_copycols(t)))
     end"""
@@ -97,5 +97,4 @@ _get_path_code(directory, filename) = """joinpath(dirname(@__FILE__), "$director
 _get_varname(filename) = replace(filename, r"[\"\-,\.#@!\%\s+\;()\$&*\[\]\{\}'^]" => "_")
 
 get_example_code(directory:: AbstractString, filename:: AbstractString, args...; kwargs...) = get_example_code(get_file_type(filename), directory, filename, args...; kwargs...)
-
 end
