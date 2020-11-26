@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/lungben/TableIO.jl.svg?branch=master)](https://travis-ci.com/lungben/TableIOInterface.jl)
-[![codecov](https://codecov.io/gh/lungben/TableIO.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/lungben/TableIOInterface.jl)
+[![Build Status](https://travis-ci.com/lungben/TableIOInterface.jl.svg?branch=master)](https://travis-ci.com/lungben/TableIOInterface.jl)
+[![codecov](https://codecov.io/gh/lungben/TableIOInterface.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/lungben/TableIOInterface.jl)
 
 # TableIOInterface
 
