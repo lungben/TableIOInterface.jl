@@ -1,6 +1,6 @@
 module TableIOInterface
 
-export get_file_type, get_example_code
+export get_file_type, get_example_code, is_extension_supported
 
 ## definition of file formats and extensions
 
@@ -47,6 +47,8 @@ const FILE_EXTENSIONS = Dict{String, DataType}(
 _get_file_extension(filename:: AbstractString) = lowercase(splitext(filename)[2][2:end])
 
 get_file_type(filename:: AbstractString) = FILE_EXTENSIONS[_get_file_extension(filename)]()
+
+is_extension_supported(extension:: AbstractString) = lowercase(extension) ∈ keys(FILE_EXTENSIONS)
 
 const import_table_io = "import TableIO"
 const import_dataframes = "import DataFrames"

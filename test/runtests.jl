@@ -82,6 +82,9 @@ using Test
             #println(sample_code)
         end
 
+        @test is_extension_supported("csv") && !is_extension_supported("foo") && is_extension_supported("xlsx")
+
+
     end
 
 end

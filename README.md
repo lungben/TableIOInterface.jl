@@ -9,4 +9,7 @@ It is intended to be the base both for TableIO.jl and for the Pluto.jl tabular d
     get_file_type("test.csv") # gives TableIOInterface.CSVFormat()
     get_file_type("test.zip") # gives TableIOInterface.ZippedFormat()
 
+    is_extension_supported("csv") # gives true
+    is_extension_supported("foo") # gives false
+
 etc.
