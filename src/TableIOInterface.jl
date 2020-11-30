@@ -17,6 +17,7 @@ struct SPSSFormat <: AbstractFormat end
 struct SASFormat <: AbstractFormat end
 struct JSONFormat <: AbstractFormat end
 struct ArrowFormat <: AbstractFormat end
+struct HDF5Format <: AbstractFormat end
 
 # data base only formats - not completely integrated yet
 struct PostgresFormat <: AbstractFormat end
@@ -42,6 +43,8 @@ const FILE_EXTENSIONS = Dict{String, DataType}(
     "sas7bdat" => SASFormat,
     "json" => JSONFormat,
     "arrow" => ArrowFormat,
+    "hdf" => HDF5Format,
+    "hdf5" => HDF5Format,
 )
 
 _get_file_extension(filename:: AbstractString) = lowercase(splitext(filename)[2][2:end])
@@ -91,6 +94,17 @@ function get_example_code(t::ZippedFormat, directory:: AbstractString, filename:
         $import_dataframes
         df_$(_get_varname(filename)) = DataFrames.DataFrame(TableIO.read_table($(_get_path_code(directory, filename)),
             # "filename_in_archive", # uncomment this to specify a specific file name in the archive
+            ); copycols=$(require_copycols(t)))
+    end"""
+end
+
+function get_example_code(t::HDF5Format, directory:: AbstractString, filename:: AbstractString)
+    """
+    df_$(_get_varname(filename)) = let
+        $import_table_io
+        $import_dataframes
+        df_$(_get_varname(filename)) = DataFrames.DataFrame(TableIO.read_table($(_get_path_code(directory, filename)),
+            "/data", # define the key of the dataset in the HDF file here
             ); copycols=$(require_copycols(t)))
     end"""
 end

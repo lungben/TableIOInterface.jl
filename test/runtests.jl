@@ -4,13 +4,13 @@ using Test
 @testset "TableIOInterface.jl" begin
 
     fnames = ["test.csv", "test.jdf", "test.parquet", "test.arrow", "test.xlsx", "test.json", 
-                "test.zip", "test.sqlite"]
+                "test.zip", "test.sqlite", "test.hdf"]
 
     @testset "File type ID" begin
         
         expected_file_types = [TableIOInterface.CSVFormat, TableIOInterface.JDFFormat, TableIOInterface.ParquetFormat,
         TableIOInterface.ArrowFormat, TableIOInterface.ExcelFormat, TableIOInterface.JSONFormat,
-        TableIOInterface.ZippedFormat, TableIOInterface.SQLiteFormat]
+        TableIOInterface.ZippedFormat, TableIOInterface.SQLiteFormat, TableIOInterface.HDF5Format]
 
         for (i, fname) ∈ enumerate(fnames)
             file_type = get_file_type(fname)
@@ -71,6 +71,14 @@ using Test
                 import DataFrames
                 df_test_sqlite = DataFrames.DataFrame(TableIO.read_table(joinpath(dirname(@__FILE__), "my_notebook.assets", "test.sqlite"),
                     "tablename", # define the table name here
+                    ); copycols=false)
+            end""",
+
+            """df_test_hdf = let
+                import TableIO
+                import DataFrames
+                df_test_hdf = DataFrames.DataFrame(TableIO.read_table(joinpath(dirname(@__FILE__), "my_notebook.assets", "test.hdf"),
+                    "/data", # define the key of the dataset in the HDF file here
                     ); copycols=false)
             end""",
 
