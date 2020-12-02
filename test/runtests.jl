@@ -87,7 +87,7 @@ using Test
         for (i, fname) ∈ enumerate(fnames)
             sample_code = get_example_code("my_notebook.jl.assets", fname)
             @test sample_code == expected_sample_code[i]
-            println(sample_code)
+            # println(sample_code)
         end
 
         @test is_extension_supported("csv") && !is_extension_supported("foo") && is_extension_supported("xlsx")

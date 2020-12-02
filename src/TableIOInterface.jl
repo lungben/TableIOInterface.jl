@@ -56,62 +56,64 @@ is_extension_supported(extension:: AbstractString) = lowercase(extension) ∈ ke
 const import_table_io = "import TableIO"
 const import_dataframes = "import DataFrames"
 
-function get_example_code(t::T, directory:: AbstractString, filename:: AbstractString) where {T <: AbstractFormat}
+# `directory` is not used anymore because it corresponds to the notebook directory when inserting the data,
+# not the current notebook directory. 
+get_example_code(t::T, directory:: AbstractString, filename:: AbstractString) where {T <: AbstractFormat} = get_example_code(t, filename)
+
+function get_example_code(t::T, filename:: AbstractString) where {T <: AbstractFormat}
     """
     df_$(_get_varname(filename)) = let
         $import_table_io
         $import_dataframes
-        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(directory, filename))); copycols=$(require_copycols(t)))
+        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename))); copycols=$(require_copycols(t)))
     end"""
 end
 
-function get_example_code(t::ExcelFormat, directory:: AbstractString, filename:: AbstractString)
+function get_example_code(t::ExcelFormat, filename:: AbstractString)
     """
     df_$(_get_varname(filename)) = let
         $import_table_io
         $import_dataframes
-        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(directory, filename)),
+        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename)),
             # "Sheet1", # uncomment this to specify the sheet name to be imported
             ); copycols=$(require_copycols(t)))
     end"""
 end
 
-function get_example_code(t::SQLiteFormat, directory:: AbstractString, filename:: AbstractString)
+function get_example_code(t::SQLiteFormat, filename:: AbstractString)
     """
     df_$(_get_varname(filename)) = let
         $import_table_io
         $import_dataframes
-        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(directory, filename)),
+        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename)),
             "tablename", # define the table name here
             ); copycols=$(require_copycols(t)))
     end"""
 end
 
-function get_example_code(t::ZippedFormat, directory:: AbstractString, filename:: AbstractString)
+function get_example_code(t::ZippedFormat, filename:: AbstractString)
     """
     df_$(_get_varname(filename)) = let
         $import_table_io
         $import_dataframes
-        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(directory, filename)),
+        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename)),
             # "filename_in_archive", # uncomment this to specify a specific file name in the archive
             ); copycols=$(require_copycols(t)))
     end"""
 end
 
-function get_example_code(t::HDF5Format, directory:: AbstractString, filename:: AbstractString)
+function get_example_code(t::HDF5Format, filename:: AbstractString)
     """
     df_$(_get_varname(filename)) = let
         $import_table_io
         $import_dataframes
-        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(directory, filename)),
+        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename)),
             "/data", # define the key of the dataset in the HDF file here
             ); copycols=$(require_copycols(t)))
     end"""
 end
 
-# `directory` is not used anymore because it corresponds to the notebook directory when inserting the data,
-# not the current notebook directory. 
-_get_path_code(directory, filename) = """joinpath(split(@__FILE__, '#')[1] * ".assets", "$filename")"""
+_get_path_code(filename) = """joinpath(split(@__FILE__, '#')[1] * ".assets", "$filename")"""
 
 _get_varname(filename) = replace(filename, r"[\"\-,\.#@!\%\s+\;()\$&*\[\]\{\}'^]" => "_")
 
