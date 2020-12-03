@@ -1,6 +1,6 @@
 module TableIOInterface
 
-export get_file_type, get_example_code, is_extension_supported
+export get_file_type, get_example_code, is_extension_supported, multiple_tables
 
 ## definition of file formats and extensions
 
@@ -25,6 +25,15 @@ struct PostgresFormat <: AbstractFormat end
 # define if copy of columns is required when converting Tables.jl interface to DataFrame
 require_copycols(::AbstractFormat) = false
 require_copycols(::JSONFormat) = true
+
+# specify if mutliple tables could be inside a single file
+multiple_tables(::AbstractFormat) = false
+
+multiple_tables(::ZippedFormat) = true
+multiple_tables(::ExcelFormat) = true
+multiple_tables(::SQLiteFormat) = true
+multiple_tables(::HDF5Format) = true
+multiple_tables(::PostgresFormat) = true
 
 # mapping of file extensions to table file formats
 # multiple extensions can be mapped to the same format
