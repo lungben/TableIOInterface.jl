@@ -47,8 +47,9 @@ using Test
             """df_test_xlsx = let
                 import TableIO
                 import DataFrames
+                # table_list = TableIO.list_tables(joinpath(split(@__FILE__, '#')[1] * ".assets", "test.xlsx")) # uncomment to get a list of all tables in this file
                 DataFrames.DataFrame(TableIO.read_table(joinpath(split(@__FILE__, '#')[1] * ".assets", "test.xlsx"),
-                    # "Sheet1", # uncomment this to specify the sheet name to be imported
+                    # "tablename", # define the table name here, if not defined the alphabetically first table is loaded
                     ); copycols=false)
             end""",
 
@@ -61,24 +62,27 @@ using Test
             """df_test_zip = let
                 import TableIO
                 import DataFrames
+                # table_list = TableIO.list_tables(joinpath(split(@__FILE__, '#')[1] * ".assets", "test.zip")) # uncomment to get a list of all tables in this file
                 DataFrames.DataFrame(TableIO.read_table(joinpath(split(@__FILE__, '#')[1] * ".assets", "test.zip"),
-                    # "filename_in_archive", # uncomment this to specify a specific file name in the archive
+                    # "tablename", # define the table name here, if not defined the alphabetically first table is loaded
                     ); copycols=false)
             end""",
             
             """df_test_sqlite = let
                 import TableIO
                 import DataFrames
+                # table_list = TableIO.list_tables(joinpath(split(@__FILE__, '#')[1] * ".assets", "test.sqlite")) # uncomment to get a list of all tables in this file
                 DataFrames.DataFrame(TableIO.read_table(joinpath(split(@__FILE__, '#')[1] * ".assets", "test.sqlite"),
-                    "tablename", # define the table name here
+                    # "tablename", # define the table name here, if not defined the alphabetically first table is loaded
                     ); copycols=false)
             end""",
 
             """df_test_hdf = let
                 import TableIO
                 import DataFrames
+                # table_list = TableIO.list_tables(joinpath(split(@__FILE__, '#')[1] * ".assets", "test.hdf")) # uncomment to get a list of all tables in this file
                 DataFrames.DataFrame(TableIO.read_table(joinpath(split(@__FILE__, '#')[1] * ".assets", "test.hdf"),
-                    "/data", # define the key of the dataset in the HDF file here
+                    # "tablename", # define the table name here, if not defined the alphabetically first table is loaded
                     ); copycols=false)
             end""",
 

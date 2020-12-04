@@ -70,56 +70,24 @@ const import_dataframes = "import DataFrames"
 get_example_code(t::T, directory:: AbstractString, filename:: AbstractString) where {T <: AbstractFormat} = get_example_code(t, filename)
 
 function get_example_code(t::T, filename:: AbstractString) where {T <: AbstractFormat}
-    """
-    df_$(_get_varname(filename)) = let
-        $import_table_io
-        $import_dataframes
-        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename))); copycols=$(require_copycols(t)))
-    end"""
-end
-
-function get_example_code(t::ExcelFormat, filename:: AbstractString)
-    """
-    df_$(_get_varname(filename)) = let
-        $import_table_io
-        $import_dataframes
-        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename)),
-            # "Sheet1", # uncomment this to specify the sheet name to be imported
-            ); copycols=$(require_copycols(t)))
-    end"""
-end
-
-function get_example_code(t::SQLiteFormat, filename:: AbstractString)
-    """
-    df_$(_get_varname(filename)) = let
-        $import_table_io
-        $import_dataframes
-        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename)),
-            "tablename", # define the table name here
-            ); copycols=$(require_copycols(t)))
-    end"""
-end
-
-function get_example_code(t::ZippedFormat, filename:: AbstractString)
-    """
-    df_$(_get_varname(filename)) = let
-        $import_table_io
-        $import_dataframes
-        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename)),
-            # "filename_in_archive", # uncomment this to specify a specific file name in the archive
-            ); copycols=$(require_copycols(t)))
-    end"""
-end
-
-function get_example_code(t::HDF5Format, filename:: AbstractString)
-    """
-    df_$(_get_varname(filename)) = let
-        $import_table_io
-        $import_dataframes
-        DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename)),
-            "/data", # define the key of the dataset in the HDF file here
-            ); copycols=$(require_copycols(t)))
-    end"""
+    if multiple_tables(t)
+        """
+        df_$(_get_varname(filename)) = let
+            $import_table_io
+            $import_dataframes
+            # table_list = TableIO.list_tables($(_get_path_code(filename))) # uncomment to get a list of all tables in this file
+            DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename)),
+                # "tablename", # define the table name here, if not defined the alphabetically first table is loaded
+                ); copycols=$(require_copycols(t)))
+        end"""
+    else
+        """
+        df_$(_get_varname(filename)) = let
+            $import_table_io
+            $import_dataframes
+            DataFrames.DataFrame(TableIO.read_table($(_get_path_code(filename))); copycols=$(require_copycols(t)))
+        end"""
+    end
 end
 
 _get_path_code(filename) = """joinpath(split(@__FILE__, '#')[1] * ".assets", "$filename")"""
