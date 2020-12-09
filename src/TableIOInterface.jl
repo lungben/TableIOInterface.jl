@@ -18,6 +18,7 @@ struct SASFormat <: AbstractFormat end
 struct JSONFormat <: AbstractFormat end
 struct ArrowFormat <: AbstractFormat end
 struct HDF5Format <: AbstractFormat end
+struct JLD2Format <: AbstractFormat end
 
 # data base only formats - not completely integrated yet
 struct PostgresFormat <: AbstractFormat end
@@ -33,6 +34,7 @@ multiple_tables(::ZippedFormat) = true
 multiple_tables(::ExcelFormat) = true
 multiple_tables(::SQLiteFormat) = true
 multiple_tables(::HDF5Format) = true
+multiple_tables(::JLD2Format) = true
 multiple_tables(::PostgresFormat) = true
 
 # mapping of file extensions to table file formats
@@ -54,6 +56,7 @@ const FILE_EXTENSIONS = Dict{String, DataType}(
     "arrow" => ArrowFormat,
     "hdf" => HDF5Format,
     "hdf5" => HDF5Format,
+    "jld2" => JLD2Format,
 )
 
 _get_file_extension(filename:: AbstractString) = lowercase(splitext(filename)[2][2:end])
