@@ -4,13 +4,14 @@ using Test
 @testset "TableIOInterface.jl" begin
 
     fnames = ["test.csv", "test.jdf", "test.parquet", "test.arrow", "test.xlsx", "test.json", 
-                "test.zip", "test.sqlite", "test.hdf"]
+                "test.zip", "test.sqlite", "test.hdf", "test.jld2"]
 
     @testset "File type ID" begin
         
         expected_file_types = [TableIOInterface.CSVFormat, TableIOInterface.JDFFormat, TableIOInterface.ParquetFormat,
         TableIOInterface.ArrowFormat, TableIOInterface.ExcelFormat, TableIOInterface.JSONFormat,
-        TableIOInterface.ZippedFormat, TableIOInterface.SQLiteFormat, TableIOInterface.HDF5Format]
+        TableIOInterface.ZippedFormat, TableIOInterface.SQLiteFormat, TableIOInterface.HDF5Format,
+        TableIOInterface.JLD2Format]
 
         for (i, fname) ∈ enumerate(fnames)
             file_type = get_file_type(fname)
@@ -85,6 +86,15 @@ using Test
                     # "tablename", # define the table name here, if not defined the alphabetically first table is loaded
                     ); copycols=false)
             end""",
+
+            """df_test_jld2 = let
+                import TableIO
+                import DataFrames
+                # table_list = TableIO.list_tables(joinpath(split(@__FILE__, '#')[1] * ".assets", "test.jld2")) # uncomment to get a list of all tables in this file
+                DataFrames.DataFrame(TableIO.read_table(joinpath(split(@__FILE__, '#')[1] * ".assets", "test.jld2"),
+                    # "tablename", # define the table name here, if not defined the alphabetically first table is loaded
+                    ); copycols=false)
+            end"""
 
         ]
 
